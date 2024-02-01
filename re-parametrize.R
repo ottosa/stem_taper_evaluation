@@ -8,15 +8,12 @@
 #  data.frame contains:
 #   tree id = id
 #   tree stand  = stand
-#   Measurment X coordinate = X
-#   Mesurement Y coordinate = Y
-#   Mesurement height = Z
+#   Measurement X coordinate = X
+#   Measurement Y coordinate = Y
+#   Measurement height = Z
 #   Diameter at Z = D
 #   Tree Canopy Class = CC
 #   Tree diamter class = dbh_c
-
-# runs script: Data_process.r
-source("E:/MMM_UNITE/Stemcurves/GitHub/Data_process.r")
 
 
 # Re-parametrizing workflow
@@ -31,16 +28,11 @@ source("E:/MMM_UNITE/Stemcurves/GitHub/Data_process.r")
 #########################
 
 
-#library(ggplot2)
-
 # create data.frames to store:
 #   1. tree id = id
 #   2. tree stand = stand
 #   3. treatment = treat
 #   4. Relative height intervals from 0.01 to 0.95 = inter
-
-setwd("E:/MMM_UNITE/Stemcurves/GitHub")
-source("re_functions.R")
 
 # Using functions from re_functions.R script to create:
 # 1. pros_CCF/EAF data.frame containing relative and absolute height and dbh values
@@ -67,11 +59,6 @@ pros_EAF <- as.data.frame(EAF_list[[2]])
 ###############################
 
 # re-parametrizing for: treatments, stands and canopy class
-
-library(gridExtra)
-library(ggplot2)
-library(tidyverse)
-
 
 pros_all <- rbind(pros_CCF,pros_EAF) # combining CCF and EAF data
 plot_lists <- list() # list for plotting
@@ -122,8 +109,6 @@ for (i in levels(as.factor(c("treat", "stand", "CC")))) {
 # Check the summary table
 sum_table
 
-#write.csv(sum_table, "E:/Väikkäri_Otto/Artikkelit/Artikkeli 1/models.csv")
-
 # Re-parametrizing for each tree 
 
 # list to store each re-parametrizing
@@ -131,8 +116,14 @@ models_trees <- list()
 
 # Loop to separately re-parametrize each tree
 for (i in levels(as.factor(pros_all$id))) {
-  models_trees[[i]] <- lm(relD ~ I((1-relH)^1) + I((1-relH)^2) + I((1-relH)^3) + I((1-relH)^5) + 
-                               I((1-relH)^8) + I((1-relH)^13) + I((1-relH)^21) + I((1-relH)^34), data = pros_all[pros_all$id == i,])
+  models_trees[[i]] <- lm(relD ~ I((1-relH)^1) +
+                            I((1-relH)^2) +
+                            I((1-relH)^3) +
+                            I((1-relH)^5) +
+                            I((1-relH)^8) +
+                            I((1-relH)^13) +
+                            I((1-relH)^21) +
+                            I((1-relH)^34), data = pros_all[pros_all$id == i,])
   
 }
 

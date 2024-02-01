@@ -12,28 +12,16 @@
 ##    - Data contains: tree id, X and Y coordinates, Z = diameter and stem height at the Z diameter
 ##     
 
-
-# librarys needed
-library(data.table)
-library(dplyr)
-
-# Empty R environment 
-
-rm(list = ls())
-
-# Set working directory
-setwd("E:/MMM_UNITE/Stemcurves")
-
 # 1. Defining  canopy class and diameter class of each tree
 
-# Reading field measuremnts of the trees
-data_CCF <- as.data.table(read.delim("ERIKA/Maastomittaukset_ERIKA.txt", dec = ','))
+# Reading field measurements of the trees
+data_CCF <- as.data.table(read.delim("Data/field_CCF.txt", dec = ','))
 data_CCF$DBH <- (data_CCF$DBH1+data_CCF$DBH2)/2
 data_CCF$Treat <- "CCF"
 data_CCF <- data_CCF[, .(ID, Stand = Plot, Treat, DBH, H)]
 colnames(data_CCF)
 
-data_EAF <- as.data.table(read.delim("Honkalahti/Honkalahti_TLSpuut.txt"))
+data_EAF <- as.data.table(read.delim("Data/field_EAF.txt"))
 data_EAF$Treat <- "EAF"
 data_EAF <- data_EAF[, .(ID = TreeID, Stand, Treat, DBH = dbh_field, H = h_field)]
 colnames(data_EAF)
@@ -110,15 +98,13 @@ for (i in levels(as.factor(data_comb$ID))){
 # 2. Reading in single-tree diameter measurements
 
 # List of tree files at the directory
-files_CCF <- list.files("ERIKA/TXT") # CCF data
-files_EAF <- list.files("Honkalahti/TXT") #EAF data
+files_CCF <- list.files("Data/TXT_CCF") # CCF data
+files_EAF <- list.files("Data/TXT_EAF") #EAF data
 
-setwd("E:/MMM_UNITE/Stemcurves/GitHub")
-source("re_functions.R")
 
 # Read CCF and EAF single tree TLS measurement data with read_trees() function 
-tree_data_CCF <- read_trees(files_CCF,"E:/MMM_UNITE/Stemcurves/ERIKA/TXT/", data_comb) 
-tree_data_EAF <- read_trees(files_EAF,"E:/MMM_UNITE/Stemcurves/Honkalahti/TXT/", data_comb)
+tree_data_CCF <- read_trees(files_CCF,"Data/TXT_CCF/", data_comb) 
+tree_data_EAF <- read_trees(files_EAF,"Data/TXT_EAF/", data_comb)
 
 
 # Adding canopy Class to tree data

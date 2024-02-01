@@ -45,13 +45,7 @@ read_trees <- function(f, dir_path, d_frame){
   # return data.frame
   return(data)
 }
-################################################################################
 
-### Laasasenaho (1982) stem curve function ###
-
-f <- function(x) (2.3366*(1-x)^1 + -3.2684*(1-x)^2 + 3.6513*(1-x)^3 + 
-                    -2.2608*(1-x)^5 + 0.0*(1-x)^8 + 2.1501*(1-x)^13 + 
-                    -2.7412*(1-x)^21 + 1.8876*(1-x)^34)^2
 ################################################################################
 
 ### Function for creating interval data frame ###
@@ -168,9 +162,20 @@ stemC_fun <- function(x, model_coefs)(as.numeric(coef(model_coefs)[[1]])+
                                         as.numeric(coef(model_coefs)[[6]])*(1-x)^8+
                                         as.numeric(coef(model_coefs)[[7]])*(1-x)^13+
                                         as.numeric(coef(model_coefs)[[8]])*(1-x)^21+
-                                        as.numeric(coef(model_coefs)[[9]])*(1-x)^34)^2
+                                        as.numeric(coef(model_coefs)[[9]])*(1-x)^34)
 ################################################################################
 
 
 
+### Laasasenaho (1982) stem curve function ###
 
+f <- function(x) 2.3366*(1-x)^1 +
+                    -3.2684*(1-x)^2 +
+                    3.6513*(1-x)^3 + 
+                    -2.2608*(1-x)^5 +
+                    0.0*(1-x)^8 +
+                    2.1501*(1-x)^13 + 
+                    -2.7412*(1-x)^21 +
+                    1.8876*(1-x)^34
+
+################################################################################
