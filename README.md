@@ -63,5 +63,6 @@ Plotting.R
 
 
 ## References
-###R Core Team (2023). _R: A Language and Environment for Statistical Computing_. R Foundation for Statistical Computing, Vienna, Austria. <https://www.R-project.org/>.
-###Laasasenaho J (1982) Taper curve and volume functions for pine, spruce and birch. Communicationes Instituti Forestalis Fenniae 108: 1-74. http://urn.fi/URN:ISBN:951-40-0589-9
+
+### R Core Team (2023). _R: A Language and Environment for Statistical Computing_. R Foundation for Statistical Computing, Vienna, Austria. <https://www.R-project.org/>.
+### Laasasenaho J (1982) Taper curve and volume functions for pine, spruce and birch. Communicationes Instituti Forestalis Fenniae 108: 1-74. http://urn.fi/URN:ISBN:951-40-0589-9
