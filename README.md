@@ -47,19 +47,19 @@ Plotting.R
 
 
 ## Required R libraries 
-data.table
-dplyr
-gridExtra
-ggplot2
-tidyverse
-ggpubr
-scales
-ggpmisc
-reshape2
-Metrics
-lme4
-rsq
-agricolae
+- data.table
+- dplyr
+- gridExtra
+- ggplot2
+- tidyverse
+- ggpubr
+- scales
+- ggpmisc
+- reshape2
+- Metrics
+- lme4
+- rsq
+- agricolae
 
 
 ## References
