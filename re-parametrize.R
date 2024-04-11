@@ -35,8 +35,8 @@
 #   4. Relative height intervals from 0.01 to 0.95 = inter
 
 # Using functions from re_functions.R script to create:
-# 1. pros_CCF/EAF data.frame containing relative and absolute height and dbh values
-# 2. updating tree_data_CCF/EAF data.frame to contain relative dbh
+# 1. pros_CCF/RF data.frame containing relative and absolute height and dbh values
+# 2. updating tree_data_CCF/RF data.frame to contain relative dbh
 
 # CCF trees
 pros_CCF <- intervals(tree_data_CCF, "CCF")
@@ -46,13 +46,13 @@ CCF_list <- rel_splin(tree_data_CCF, pros_CCF, "CCF")
 tree_data_CCF <- as.data.frame(CCF_list[[1]])
 pros_CCF <- as.data.frame(CCF_list[[2]])
 
-# EAF trees
-pros_EAF <- intervals(tree_data_EAF, "EAF")
+# RF trees
+pros_RF <- intervals(tree_data_RF, "RF")
 
-EAF_list <- rel_splin(tree_data_EAF, pros_EAF, "EAF")
+RF_list <- rel_splin(tree_data_RF, pros_RF, "RF")
 
-tree_data_EAF <- as.data.frame(EAF_list[[1]])
-pros_EAF <- as.data.frame(EAF_list[[2]])
+tree_data_RF <- as.data.frame(RF_list[[1]])
+pros_RF <- as.data.frame(RF_list[[2]])
 
 ###############################
 #### re-parametrize model  ####
@@ -60,7 +60,7 @@ pros_EAF <- as.data.frame(EAF_list[[2]])
 
 # re-parametrizing for: treatments, stands and canopy class
 
-pros_all <- rbind(pros_CCF,pros_EAF) # combining CCF and EAF data
+pros_all <- rbind(pros_CCF,pros_RF) # combining CCF and RF data
 plot_lists <- list() # list for plotting
 models <- list() # list for re-parametrizing
 
@@ -108,6 +108,9 @@ for (i in levels(as.factor(c("treat", "stand", "CC")))) {
 }
 # Check the summary table
 sum_table
+min(sum_table$BIAS)
+round(mean(sum_table$BIAS),digits = 16)
+max(sum_table$BIAS)
 
 # Re-parametrizing for each tree 
 

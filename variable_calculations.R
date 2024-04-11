@@ -72,15 +72,15 @@ head(data_attr)
 
 # Change stand and canopy class names to more easily understandable 
 
-data_attr <- data_attr %>% mutate(stand = recode(stand,"1" = "EAF 1", "120" = "EAF 2", "136" = "EAF 3", 
-                                                 "140" = "EAF 4", "141" = "EAF 5", "151" = "EAF 6", 
-                                                 "158" = "EAF 7", "17" = "EAF 8","2" = "EAF 9", "20" = "EAF 10", 
-                                                 "3" = "EAF 11", "315" = "EAF 12","5" = "EAF 13", "86" = "EAF 14",
+data_attr <- data_attr %>% mutate(stand = recode(stand,"1" = "RF 1", "120" = "RF 2", "136" = "RF 3", 
+                                                 "140" = "RF 4", "141" = "RF 5", "151" = "RF 6", 
+                                                 "158" = "RF 7", "17" = "RF 8","2" = "RF 9", "20" = "RF 10", 
+                                                 "3" = "RF 11", "315" = "RF 12","5" = "RF 13", "86" = "RF 14",
                                                  "EVO2" = "CCF 1", "EVO3" = "CCF 2", "EVO4" = "CCF 3",
                                                  "VEP2" = "CCF 4", "VEP4" = "CCF 5", "VES16" = "CCF 6","VES2" = "CCF 7"))
 
 data_attr <- data_attr %>% mutate(CC = recode(CC, "CCF_1" = "1 CC CCF", "CCF_2" = "2 CC CCF", "CCF_3" = "3 CC CCF",
-                                              "EAF_1" = "1 CC EAF", "EAF_2" = "2 CC EAF", "EAF_3" = "3 CC EAF"))
+                                              "RF_1" = "1 CC RF", "RF_2" = "2 CC RF", "RF_3" = "3 CC RF"))
 ### End of the attribute calculation part ###
 
 

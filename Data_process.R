@@ -1,7 +1,7 @@
 
 # Data processing for stem taper function evaluation
 
-## Data from two treatments: CCF (continuous-cover forest) and EAF (even-aged forest)
+## Data from two treatments: CCF (continuous-cover forest) and RF (even-aged forest)
 
 ## Workflow:
 ## 1. Define canopy class and diameter class of each tree
@@ -21,12 +21,12 @@ data_CCF$Treat <- "CCF"
 data_CCF <- data_CCF[, .(ID, Stand = Plot, Treat, DBH, H)]
 colnames(data_CCF)
 
-data_EAF <- as.data.table(read.delim("Data/field_EAF.txt"))
-data_EAF$Treat <- "EAF"
-data_EAF <- data_EAF[, .(ID = TreeID, Stand, Treat, DBH = dbh_field, H = h_field)]
-colnames(data_EAF)
+data_RF <- as.data.table(read.delim("Data/field_RF.txt"))
+data_RF$Treat <- "RF"
+data_RF <- data_RF[, .(ID = TreeID, Stand, Treat, DBH = dbh_field, H = h_field)]
+colnames(data_RF)
 
-data_comb <- as.data.frame(rbind(data_CCF,data_EAF))
+data_comb <- as.data.frame(rbind(data_CCF,data_RF))
 
 str(data_comb)
 
@@ -99,28 +99,28 @@ for (i in levels(as.factor(data_comb$ID))){
 
 # List of tree files at the directory
 files_CCF <- list.files("Data/TXT_CCF") # CCF data
-files_EAF <- list.files("Data/TXT_EAF") #EAF data
+files_RF <- list.files("Data/TXT_RF") #RF data
 
 
-# Read CCF and EAF single tree TLS measurement data with read_trees() function 
+# Read CCF and RF single tree TLS measurement data with read_trees() function 
 tree_data_CCF <- read_trees(files_CCF,"Data/TXT_CCF/", data_comb) 
-tree_data_EAF <- read_trees(files_EAF,"Data/TXT_EAF/", data_comb)
+tree_data_RF <- read_trees(files_RF,"Data/TXT_RF/", data_comb)
 
 
 # Adding canopy Class to tree data
 tree_data_CCF$CC <- data_comb$CC[match(tree_data_CCF$id,data_comb$ID)]
-tree_data_EAF$CC <- data_comb$CC[match(tree_data_EAF$id,data_comb$ID)]
+tree_data_RF$CC <- data_comb$CC[match(tree_data_RF$id,data_comb$ID)]
 
 # Adding dbh class to tree data
 tree_data_CCF$dbh_c <- data_comb$dbh_c[match(tree_data_CCF$id,data_comb$ID)]
-tree_data_EAF$dbh_c <- data_comb$dbh_c[match(tree_data_EAF$id,data_comb$ID)]
+tree_data_RF$dbh_c <- data_comb$dbh_c[match(tree_data_RF$id,data_comb$ID)]
 
 # Data table ready
 summary(tree_data_CCF)
-summary(tree_data_EAF)
+summary(tree_data_RF)
 
 head(tree_data_CCF)
-head(tree_data_EAF)
+head(tree_data_RF)
 
 
 

@@ -12,7 +12,7 @@
 
 # data.frame to store calculations of each tree
 data <- data.frame(id = unique(tree_data_CCF$id), treat = "CCF")
-data <- rbind(data, data.frame(id = unique(tree_data_EAF$id), treat = "EAF"))
+data <- rbind(data, data.frame(id = unique(tree_data_RF$id), treat = "RF"))
 
 
 # loop to calculate attributes from stem curve
@@ -41,22 +41,22 @@ for (i in levels(as.factor(data$id))){
     
     
     
-  # EAF (same parameters)  
+  # RF (same parameters)  
   } else{
     
-    spl = smooth.spline(tree_data_EAF$Z[tree_data_EAF$id == i], tree_data_EAF$D[tree_data_EAF$id == i])
-    h50 <- max(tree_data_EAF$Z[tree_data_EAF$id == i])*0.5
+    spl = smooth.spline(tree_data_RF$Z[tree_data_RF$id == i], tree_data_RF$D[tree_data_RF$id == i])
+    h50 <- max(tree_data_RF$Z[tree_data_RF$id == i])*0.5
     
-    data$stand[data$id == i] <- unique(pros_EAF$stand[pros_EAF$id == i])
-    data$CC[data$id == i] <- unique(pros_EAF$CC[pros_EAF$id == i])
-    data$dbh[data$id == i] <- data_EAF$DBH[data_EAF$ID == i]
-    data$d20[data$id == i] <- pros_EAF$d[pros_EAF$inter == 0.2 & pros_EAF$id == i]*100
+    data$stand[data$id == i] <- unique(pros_RF$stand[pros_RF$id == i])
+    data$CC[data$id == i] <- unique(pros_RF$CC[pros_RF$id == i])
+    data$dbh[data$id == i] <- data_RF$DBH[data_RF$ID == i]
+    data$d20[data$id == i] <- pros_RF$d[pros_RF$inter == 0.2 & pros_RF$id == i]*100
     data$d50[data$id == i] <- predict(spl,h50)$y * 100
     data$d6m[data$id == i] <- predict(spl,6)$y * 100
     if(data$dbh[data$id == i] < data$d6m[data$id == i]){
       data$dbh[data$id == i] <- predict(spl,1.3)$y * 100
     }
-    data$h[data$id == i] <- pros_EAF$h[pros_EAF$inter== 1 & pros_EAF$id == i]
+    data$h[data$id == i] <- pros_RF$h[pros_RF$inter== 1 & pros_RF$id == i]
     data$ppa[data$id == i] <- pi * ((data$dbh[data$id == i]/100)/2)^2
     
     
@@ -102,13 +102,13 @@ for (i in levels(as.factor(data$id))) {
       volume_bott <- (pi*((tree$d20/100)/2)^2) * tree$h * (pi/4) * form$int_bott[form$mod_name == j] # bottom (50%) trun volume
       
       # elif stores volume to correct column according to model (j) name
-      if (j == "CCF" | j == "EAF"){
+      if (j == "CCF" | j == "RF"){
         
         tree$volume_treat <- volume
         tree$volume_upp_treat <- volume_upp
         tree$volume_bott_treat <- volume_bott
         
-      } else if(substring(j,1,4) == "CCF_" | substring(j,1,4) == "EAF_"){
+      } else if(substring(j,1,4) == "CCF_" | substring(j,1,3) == "RF_"){
         
         tree$volume_CC <- volume
         tree$volume_upp_CC <- volume_upp

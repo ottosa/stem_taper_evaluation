@@ -3,13 +3,15 @@
 #### Result plots ####
 ######################
 
-# set working directory
-
 ###########################
 ### Plotting stemcurves ###
 ###########################
 
+# Change names of plot_list 
+names(plot_lists)
 
+names(plot_lists) <- c("1 CC CCF", "2 CC CCF", "3 CC CCF", "1 CC RF", "2 CC RF", "3 CC RF", "RF 1", "RF 2", "RF 3", "RF 4", "RF 5", "RF 6", "RF 7", 
+                       "RF 8", "RF 9", "RF 10","RF 11", "RF 12", "RF 13", "RF 14","CCF 1", "CCF 2", "CCF 3", "CCF 4", "CCF 5", "CCF 6", "CCF 7", "CCF", "RF")
 
 # First plot all the stem curves with different stratum 
 plot_data <- data.frame(relH = c(0.01,0.025,0.05,0.075,0.10,0.15,0.20,0.25,
@@ -52,6 +54,8 @@ plot_data_2 <- plot_data_2 %>% add_column(relD = NA,
                                       pred_xmax = NA)
 
 plot_data <- rbind(plot_data, plot_data_2)
+plot_data$c <- as.factor(plot_data$c)
+plot_data$c <- factor(plot_data$c, levels = c("CCF","RF","Laasasenaho"))
 
 plot_treat <- ggplot(data = plot_data, aes(x = pred_sD, y = relH, color = c)) +
   geom_line(size = 1.2, alpha = 0.75) 
@@ -78,26 +82,27 @@ plot_treat +
 # Use data_attr data.frame
 colnames(data_attr)
 
-# Split data to CCF and EAF data sets
+# Split data to CCF and RF data sets
 data_attr_CCF <- data_attr[data_attr$treat == "CCF",]
-data_attr_EAF <- data_attr[data_attr$treat == "EAF",]
+data_attr_RF <- data_attr[data_attr$treat == "RF",]
 data_attr <- as.data.table(data_attr)
 
 plot_data <- melt(data_attr, id.vars = 'treat',
-                 measure.vars = c('volume_treat', 'volume_CC', 'volume_stand', 'volume_Laasasenaho'))
+                 measure.vars = c('volume_treat', 'volume_CC', 'volume_stand', 'volume_Laasasenaho', 'volume_tree'))
 plot_data_2 <- plot_data
-plot_data_2$treat <- 'CCF & EAF'
+plot_data_2$treat <- 'CCF & RF'
 plot_data <- rbind(plot_data,plot_data_2)
 plot_data$variable <- fct_recode(plot_data$variable,
                                 'Treatment' = 'volume_treat', 
                                 'Canopy Class' = 'volume_CC', 
                                 'Stand' = 'volume_stand', 
-                                'Laasasenaho' = 'volume_Laasasenaho')
+                                'Laasasenaho' = 'volume_Laasasenaho',
+                                'Reference trees' = 'volume_tree')
 
 p_vol <- ggplot(plot_data) +
   geom_boxplot(aes(x = treat, y = value, color = variable), lwd = 1, fatten=4,
                position=position_dodge(0.89)) + 
-  scale_color_brewer(palette = "BrBG") + 
+  scale_color_brewer(palette = "Set1") + 
   scale_y_continuous(labels = number_format(accuracy = 0.01)) +
   labs(x = '', y = expression(vol~(m^3)),color = '') + 
   theme_classic() +
@@ -106,102 +111,107 @@ p_vol <- ggplot(plot_data) +
 
 
 plot_data <- melt(data_attr, id.vars = 'treat',
-                 measure.vars = c('volume_upp_treat', 'volume_upp_CC', 'volume_upp_stand', 'volume_upp_Laasasenaho'))
+                 measure.vars = c('volume_upp_treat', 'volume_upp_CC', 'volume_upp_stand', 'volume_upp_Laasasenaho', 'volume_upp_tree'))
 plot_data_2 <- plot_data
-plot_data_2$treat <- 'CCF & EAF'
+plot_data_2$treat <- 'CCF & RF'
 plot_data <- rbind(plot_data,plot_data_2)
 plot_data$variable <- fct_recode(plot_data$variable,
                                 'Treatment' = 'volume_upp_treat', 
                                 'Canopy Class' = 'volume_upp_CC', 
                                 'Stand' = 'volume_upp_stand', 
-                                'laasasenaho' = 'volume_upp_Laasasenaho')
+                                'laasasenaho' = 'volume_upp_Laasasenaho',
+                                'Reference trees' = 'volume_upp_tree')
 
 
 p_u_vol <- ggplot(plot_data) +
   geom_boxplot(aes(x = treat, y = value, color = variable), lwd = 1, fatten=4,
                position=position_dodge(0.89)) + 
   scale_y_continuous(labels = number_format(accuracy = 0.01)) +
-  scale_color_brewer(palette = "BrBG") + 
+  scale_color_brewer(palette = "Set1") + 
   labs(x = '', y = expression(vol_top~(m^3)), color = '') + 
   theme_classic() +
   theme(text = element_text(size = 20))
 
 plot_data <- melt(data_attr, id.vars = 'treat',
-                 measure.vars = c('volume_bott_treat', 'volume_bott_CC', 'volume_bott_stand', 'volume_bott_Laasasenaho'))
+                 measure.vars = c('volume_bott_treat', 'volume_bott_CC', 'volume_bott_stand', 'volume_bott_Laasasenaho', 'volume_bott_tree'))
 plot_data_2 <- plot_data
-plot_data_2$treat <- 'CCF & EAF'
+plot_data_2$treat <- 'CCF & RF'
 plot_data <- rbind(plot_data,plot_data_2)
 plot_data$variable <- fct_recode(plot_data$variable,
                                 'Treatment' = 'volume_bott_treat', 
                                 'Canopy Class' = 'volume_bott_CC', 
                                 'Stand' = 'volume_bott_stand', 
-                                'Laasasenaho' = 'volume_bott_Laasasenaho')
+                                'Laasasenaho' = 'volume_bott_Laasasenaho',
+                                'Reference trees' = 'volume_bott_tree')
 
 p_b_vol <- ggplot(plot_data) +
   geom_boxplot(aes(x = treat, y = value, color = variable), lwd = 1, fatten=4,
                position=position_dodge(0.89)) + 
   scale_y_continuous(labels = number_format(accuracy = 0.01)) +
-  scale_color_brewer(palette = "BrBG") +  
+  scale_color_brewer(palette = "Set1") +  
   labs(x = '', y = expression(vol_bottom~(m^3)), color = '') + 
   theme_classic() +
   theme(text = element_text(size = 20))
 
 plot_data <- melt(data_attr, id.vars = 'treat',
-                 measure.vars = c('ff_treat', 'ff_CC', 'ff_stand', 'ff_Laasasenaho'))
+                 measure.vars = c('ff_treat', 'ff_CC', 'ff_stand', 'ff_Laasasenaho', 'ff_tree'))
 plot_data_2 <- plot_data
-plot_data_2$treat <- 'CCF & EAF'
+plot_data_2$treat <- 'CCF & RF'
 plot_data <- rbind(plot_data,plot_data_2)
 plot_data$variable <- fct_recode(plot_data$variable,
                                 'Treatment' = 'ff_treat', 
                                 'Canopy Class' = 'ff_CC', 
                                 'Stand' = 'ff_stand', 
-                                'Laasasenaho' = 'ff_Laasasenaho')
+                                'Laasasenaho' = 'ff_Laasasenaho',
+                                'Reference trees' = 'ff_tree')
 
 p_ff <- ggplot(plot_data) +
   geom_boxplot(aes(x = treat, y = value, color = variable), lwd = 1, fatten=4,
                position=position_dodge(0.89)) + 
   scale_y_continuous(labels = number_format(accuracy = 0.01)) +
-  scale_color_brewer(palette = "BrBG") +  
+  scale_color_brewer(palette = "Set1") +  
   labs(x = '', y = 'ff', color = '') + 
   theme_classic() +
   theme(text = element_text(size = 20))
 
 plot_data <- melt(data_attr, id.vars = 'treat',
-                 measure.vars = c('ff50_treat', 'ff50_CC', 'ff50_stand', 'ff50_Laasasenaho'))
+                 measure.vars = c('ff50_treat', 'ff50_CC', 'ff50_stand', 'ff50_Laasasenaho', 'ff50_tree'))
 plot_data_2 <- plot_data
-plot_data_2$treat <- 'CCF & EAF'
+plot_data_2$treat <- 'CCF & RF'
 plot_data <- rbind(plot_data,plot_data_2)
 plot_data$variable <- fct_recode(plot_data$variable,
                                 'Treatment' = 'ff50_treat', 
                                 'Canopy Class' = 'ff50_CC', 
                                 'Stand' = 'ff50_stand', 
-                                'Laasasenaho' = 'ff50_Laasasenaho')
+                                'Laasasenaho' = 'ff50_Laasasenaho',
+                                'Reference trees' = 'ff50_tree')
 
 p_ff50 <- ggplot(plot_data) +
   geom_boxplot(aes(x = treat, y = value, color = variable), lwd = 1, fatten=4,
                position=position_dodge(0.89)) + 
   scale_y_continuous(labels = number_format(accuracy = 0.01)) +
-  scale_color_brewer(palette = "BrBG") +  
+  scale_color_brewer(palette = "Set1") +  
   labs(x = '', y = 'ff_50%', color = '') + ylim(c(0.95,2.5)) + 
   theme_classic() +
   theme(text = element_text(size = 20))
 
 
 plot_data <- melt(data_attr, id.vars = 'treat',
-                 measure.vars = c('fh_treat', 'fh_CC', 'fh_stand', 'fh_Laasasenaho'))
+                 measure.vars = c('fh_treat', 'fh_CC', 'fh_stand', 'fh_Laasasenaho','fh_tree'))
 plot_data_2 <- plot_data
-plot_data_2$treat <- 'CCF & EAF'
+plot_data_2$treat <- 'CCF & RF'
 plot_data <- rbind(plot_data,plot_data_2)
 plot_data$variable <- fct_recode(plot_data$variable,
                                 'Treatment' = 'fh_treat', 
                                 'Canopy Class' = 'fh_CC', 
                                 'Stand' = 'fh_stand', 
-                                'Laasasenaho' = 'fh_Laasasenaho')
+                                'Laasasenaho' = 'fh_Laasasenaho',
+                                'Reference trees' = 'fh_tree')
 
 p_fh <- ggplot(plot_data) +
   geom_boxplot(aes(x = treat, y = value, color = variable), lwd = 1, fatten=4,
                position=position_dodge(0.89)) + 
-  scale_color_brewer(palette = "BrBG") +  
+  scale_color_brewer(palette = "Set1") +  
   labs(x = '', y = 'fh', color = '') + 
   theme_classic() +
   theme(text = element_text(size = 20))
@@ -254,7 +264,7 @@ for (i in levels(as.factor(plot_data$attribute))) {
   data_single <- melt(as.data.table(data_attr), id.vars = 'CC',
                       measure.vars = c(i))
   data_single$CC <- factor(data_single$CC, levels = c("1 CC CCF", "2 CC CCF", "3 CC CCF",
-                                                      "1 CC EAF", "2 CC EAF", "3 CC EAF"))
+                                                      "1 CC RF", "2 CC RF", "3 CC RF"))
   treat_plot <- ggplot(data_single) +
     geom_boxplot(aes(x = CC, y = value, color = CC), lwd = 1, fatten = 3) +
     scale_color_brewer(palette = "Set2") +
@@ -287,12 +297,12 @@ for (i in levels(as.factor(plot_data$attribute))) {
   
 }
 
-#### EAF Stands ####
+#### RF Stands ####
 
-plot_list_EAF <- list()
+plot_list_RF <- list()
 
 for (i in levels(as.factor(plot_data$attribute))) {
-  data_single <- melt(as.data.table(data_attr_EAF), id.vars = 'stand',
+  data_single <- melt(as.data.table(data_attr_RF), id.vars = 'stand',
                       measure.vars = c(i))
   
   treat_plot <- ggplot(data_single) +
@@ -301,7 +311,7 @@ for (i in levels(as.factor(plot_data$attribute))) {
     theme_classic() +
     theme(legend.position = "none", text = element_text(size = 15),
           axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5))
-  plot_list_EAF[[i]] <- treat_plot
+  plot_list_RF[[i]] <- treat_plot
   
 }
 
@@ -411,9 +421,9 @@ plot_3 <- ggarrange(plot_list_CCF$ff50_tree,
 CCF_plot <- ggarrange(plot_1,plot_2,plot_3,
                      align = "hv",ncol = 1, nrow = 3)
 
-## EAF
+## RF
 for (i in 1:length(labs_plots)) {
-  plot_list_EAF[[i]]<- plot_list_EAF[[i]] +
+  plot_list_RF[[i]]<- plot_list_RF[[i]] +
     labs(title = labs_plots[[i]]) + 
     theme(axis.title.x = element_blank(),
           axis.text.x = element_blank(),
@@ -423,27 +433,27 @@ for (i in 1:length(labs_plots)) {
     scale_y_continuous(labels = number_format(accuracy = 0.01))
 }
 
-plot_1 <- ggarrange(plot_list_EAF$rel_vol,
-                    plot_list_EAF$rel_bott,
-                    plot_list_EAF$rel_upper, ncol = 3)
-plot_2 <- ggarrange(plot_list_EAF$volume_tree,
-                    plot_list_EAF$volume_upp_tree,
-                    plot_list_EAF$volume_bott_tree,
-                    plot_list_EAF$fh_tree,
-                    plot_list_EAF$ff_tree, ncol = 5)
+plot_1 <- ggarrange(plot_list_RF$rel_vol,
+                    plot_list_RF$rel_bott,
+                    plot_list_RF$rel_upper, ncol = 3)
+plot_2 <- ggarrange(plot_list_RF$volume_tree,
+                    plot_list_RF$volume_upp_tree,
+                    plot_list_RF$volume_bott_tree,
+                    plot_list_RF$fh_tree,
+                    plot_list_RF$ff_tree, ncol = 5)
 
-plot_list_EAF$ff50_tree <- plot_list_EAF$ff50_tree + labs(color = " ")
-plot_3 <- ggarrange(plot_list_EAF$ff50_tree,
-                    plot_list_EAF$formQ,
-                    plot_list_EAF$slend,
-                    plot_list_EAF$taper,
-                    plot_list_EAF$rel_taper, ncol = 5,common.legend = TRUE, legend = "bottom")
+plot_list_RF$ff50_tree <- plot_list_RF$ff50_tree + labs(color = " ")
+plot_3 <- ggarrange(plot_list_RF$ff50_tree,
+                    plot_list_RF$formQ,
+                    plot_list_RF$slend,
+                    plot_list_RF$taper,
+                    plot_list_RF$rel_taper, ncol = 5,common.legend = TRUE, legend = "bottom")
 
 
-EAF_plot<- ggarrange(plot_1,plot_2,plot_3,
+RF_plot<- ggarrange(plot_1,plot_2,plot_3,
                      align = "hv",ncol = 1, nrow = 3)
 
 CC_plot
 CCF_plot
-EAF_plot
+RF_plot
 
